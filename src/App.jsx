@@ -10,8 +10,6 @@ export default function App() {
   const [displayText, setDisplayText] = useState("");
 
   const text = "NITR PYQS";
-
-  // typing effect
   useEffect(() => {
     let i = 0;
     const interval = setInterval(() => {
