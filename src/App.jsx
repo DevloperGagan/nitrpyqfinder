@@ -21,9 +21,8 @@ export default function App() {
   }, []);
 
   const generateLink = () => {
-    if (!subject || !year) return alert("
-Bhosdi ke,भोसड़ी ,ଭୋସଡି କେ 
-");
+    if (!subject || !year) return alert("Bhosdi ke, भोसड़ी , ଭୋସଡି କେ , 请填写所有必填字段。, போஸ்டி கே , ഭോസ്ഡി കെ");
+
 
     let yearPart = "";
 
