@@ -4,6 +4,7 @@ A fast, minimal, and modern way to access NIT Rourkela Previous Year Question Pa
 
 ---
 
+
 ## 🚀 Why this exists
 
 Let’s be honest — the NITRIS PYQ portal is:
@@ -35,6 +36,11 @@ This project fixes that.
 * 🧩 Minimal, distraction-free experience
 
 ---
+
+## Live Webpage
+```
+https://https://nitrpyqs.netlify.app/
+```
 
 ## 🧠 How it works
 
@@ -83,12 +89,6 @@ Deployed easily using Netlify:
   ```
   dist
   ```
-
----
-
-## 📸 Demo
-
-> Coming soon (or add your screenshot here)
 
 ---
 
