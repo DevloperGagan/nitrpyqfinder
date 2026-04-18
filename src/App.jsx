@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { FaInstagram, FaGithub, FaEnvelope } from "react-icons/fa";
+import { subjects } from "./data";
 
 export default function App() {
   const [subject, setSubject] = useState("");
   const [year, setYear] = useState("");
   const [semester, setSemester] = useState("Spring");
   const [examType, setExamType] = useState("End");
-  const [visits, setVisits] = useState(null);
-  const [displayText, setDisplayText] = useState("");
 
-  const text = "NITR PYQS";
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [filteredSubjects, setFilteredSubjects] = useState([]);
+
+  const [displayText, setDisplayText] = useState("");
+  const text = "NITR PYQS FETCHER";
+
+  // typing effect
   useEffect(() => {
     let i = 0;
     const interval = setInterval(() => {
@@ -20,9 +25,15 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
+  // close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = () => setShowDropdown(false);
+    window.addEventListener("click", handleClickOutside);
+    return () => window.removeEventListener("click", handleClickOutside);
+  }, []);
+
   const generateLink = () => {
     if (!subject || !year) return alert("Bhosdi ke, भोसड़ी , ଭୋସଡି କେ , 请填写所有必填字段。, போஸ்டி கே , ഭോസ്ഡി കെ");
-
 
     let yearPart = "";
 
@@ -55,13 +66,62 @@ export default function App() {
         </h1>
 
         <div style={styles.form}>
-          <input
-            placeholder="Subject Code E.g. CE1100"
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-            style={styles.input}
-          />
+          {/* SUBJECT INPUT + DROPDOWN */}
+          <div onClick={(e) => e.stopPropagation()}>
+            <input
+              placeholder="Subject Code or Name"
+              value={subject}
+              onChange={(e) => {
+                const value = e.target.value;
+                setSubject(value);
 
+                if (value.trim() !== "") {
+                  const filtered = subjects.filter(
+                    (sub) =>
+                      sub.code.toLowerCase().includes(value.toLowerCase()) ||
+                      sub.name.toLowerCase().includes(value.toLowerCase())
+                  );
+
+                  setFilteredSubjects(filtered);
+                  setShowDropdown(true);
+                } else {
+                  setShowDropdown(false);
+                }
+              }}
+              onFocus={() => subject && setShowDropdown(true)}
+              style={styles.input}
+            />
+
+            {showDropdown && (
+              <div style={styles.dropdown}>
+                {filteredSubjects.length > 0 ? (
+                  filteredSubjects.map((sub, index) => (
+                    <div
+                      key={index}
+                      style={styles.dropdownItem}
+                      onClick={() => {
+                        setSubject(sub.code);
+                        setShowDropdown(false);
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.background = "#00f0ff22")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.background = "transparent")
+                      }
+                    >
+                      <div style={styles.code}>{sub.code}</div>
+                      <div style={styles.name}>{sub.name}</div>
+                    </div>
+                  ))
+                ) : (
+                  <div style={styles.noResult}>No subjects found</div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* YEAR */}
           <input
             placeholder="Year (2023)"
             value={year}
@@ -69,6 +129,7 @@ export default function App() {
             style={styles.input}
           />
 
+          {/* SEMESTER */}
           <select
             value={semester}
             onChange={(e) => setSemester(e.target.value)}
@@ -79,6 +140,7 @@ export default function App() {
             <option>Summer</option>
           </select>
 
+          {/* EXAM TYPE */}
           <select
             value={examType}
             onChange={(e) => setExamType(e.target.value)}
@@ -93,12 +155,21 @@ export default function App() {
           </button>
         </div>
 
-<br/>
+        <br />
+
         <div style={styles.footer}>
-          <a href="https://instagram.com/himanshupradhann" target="_blank" rel="noreferrer">
+          <a
+            href="https://instagram.com/himanshupradhann"
+            target="_blank"
+            rel="noreferrer"
+          >
             <FaInstagram />
           </a>
-          <a href="https://github.com/himanshupradhann" target="_blank" rel="noreferrer">
+          <a
+            href="https://github.com/himanshupradhann"
+            target="_blank"
+            rel="noreferrer"
+          >
             <FaGithub />
           </a>
           <a href="mailto:pradhangagan85@gmail.com">
@@ -158,6 +229,39 @@ const styles = {
     fontSize: "14px",
   },
 
+  dropdown: {
+    marginTop: "5px",
+    background: "#0f0f15",
+    border: "1px solid #00f0ff33",
+    borderRadius: "10px",
+    maxHeight: "180px",
+    overflowY: "auto",
+    boxShadow: "0 0 12px #00f0ff22",
+  },
+
+  dropdownItem: {
+    padding: "10px",
+    cursor: "pointer",
+    borderBottom: "1px solid #00f0ff11",
+    transition: "0.2s",
+  },
+
+  code: {
+    color: "#00f0ff",
+    fontWeight: "600",
+  },
+
+  name: {
+    fontSize: "12px",
+    color: "#aaa",
+  },
+
+  noResult: {
+    padding: "10px",
+    color: "#888",
+    textAlign: "center",
+  },
+
   button: {
     marginTop: "5px",
     padding: "14px",
@@ -168,13 +272,6 @@ const styles = {
     fontWeight: "700",
     fontSize: "15px",
     cursor: "pointer",
-  },
-
-  counter: {
-    textAlign: "center",
-    marginTop: "10px",
-    color: "#aaa",
-    fontSize: "12px",
   },
 
   footer: {
