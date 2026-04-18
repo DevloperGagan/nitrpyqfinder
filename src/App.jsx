@@ -115,7 +115,7 @@ export default function App() {
                     </div>
                   ))
                 ) : (
-                  <div style={styles.noResult}>No subjects found</div>
+                  <div style={styles.noResult}>No subjects found in the dataset but still can be searchable</div>
                 )}
               </div>
             )}
