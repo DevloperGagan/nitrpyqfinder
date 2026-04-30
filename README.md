@@ -115,6 +115,7 @@ Feel free to fork, improve UI, or add features like:
 * PDF preview
 * Search history
 * Dark/light themes
+* Update the suggestion dataset
 
 ---
 
